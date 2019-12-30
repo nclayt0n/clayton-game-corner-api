@@ -19,7 +19,8 @@ const UpcomingService = {
             .select(
                 'u.id',
                 'u.title',
-                'u.date'
+                'u.date',
+                'u.game_type'
             )
             .where('u.date', '>=', new Date());
     },
