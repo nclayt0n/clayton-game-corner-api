@@ -32,6 +32,14 @@ upcomingRouter
             .catch(next);
     });
 upcomingRouter
+    .route('/api/admin/game/upcoming')
+    .get((req, res, next) => {
+        UpcomingService.adminGetAllUpcomingGames(req.app.get('db'))
+            .then(upcomingGame => {
+                res.status(200).json(UpcomingService.serializeUpcomingGames(upcomingGame));
+            });
+    });
+upcomingRouter
     .route('/api/game/upcoming/:upcoming_id')
     .all(checkGameExists)
     .get((req, res) => {

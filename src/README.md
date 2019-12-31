@@ -43,7 +43,7 @@ code:400<br/>
 /game/upcoming
 
 ### Purpose:
-to Get all upcoming games, release date, and type.
+to Get all upcoming games, release date, and type, where date is greater than or equal to today's date.
 
 ### Method:
 GET
@@ -128,6 +128,63 @@ code:400<br/>
 
 ### Purpose:
 to GET an existing upcoming game from Database.
+
+### Method:
+GET
+
+### URL Params
+#### Required:
+ title=text, date=text, game_type=game_type enum
+
+### Success Response
+Code:200<br/>
+content: {
+        "id": 1,
+        "title": "TEST GAME 1",
+        "date": "Mon Jan 20 2020 12:00:00 GMT-0500 (Eastern Standard Time)",
+        "game_type": "video"
+    },
+
+### Error Response
+code:400<br/>
+ Content:{error:'Game doesn't exist'}<br/>
+
+### Sample Call 
+## `URL`
+/game/upcoming/:upcoming_id
+
+### Purpose:
+to DELETE an existing upcoming game from Database.
+
+### Method:
+DELETE
+
+### URL Params
+#### Required:
+ title=text, date=text, game_type=game_type enum
+
+### Success Response
+Code:200<br/>
+content: {
+        "id": 1,
+        "title": "TEST GAME 1",
+        "date": "Mon Jan 20 2020 12:00:00 GMT-0500 (Eastern Standard Time)",
+        "game_type": "video"
+    },
+
+### Error Response
+code:400<br/>
+ Content:{error:'Game doesn't exist'}<br/>
+
+### Sample Call 
+
+
+
+## `URL`
+/admin/game/upcoming
+
+### Purpose:
+to GET existing upcoming games from Database.
 
 ### Method:
 GET
