@@ -12,7 +12,9 @@
         "start": "node src/server.js"
     },
     "keywords": [],
-    "engines": { "node": "10.16.3" },
+    "engines": {
+        "node": "10.16.3"
+    },
     "author": "",
     "license": "ISC",
     "dependencies": {
