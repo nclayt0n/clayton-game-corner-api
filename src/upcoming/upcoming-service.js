@@ -42,5 +42,13 @@ const UpcomingService = {
             game_type: xss(upcomingGameData.game_type)
         };
     },
+    insertGame(db, newUpcomingGame) {
+        return db.insert(newUpcomingGame)
+            .into('cgc_upcoming_games')
+            .returning('*')
+            .then(rows => {
+                return rows[0];
+            });
+    },
 };
 module.exports = UpcomingService;

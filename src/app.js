@@ -14,7 +14,7 @@ const morganOptions = (NODE_ENV === 'production') ? 'tiny' : 'dev';
 app.use(morgan(morganOptions));
 app.use(helmet());
 app.use(cors());
-app.use('/api/admin/users', usersRouter);
+app.use('/api/users', usersRouter);
 app.use(authRouter);
 app.use(upcomingRouter);
 app.use(function errorHandler(error, req, res, next) {

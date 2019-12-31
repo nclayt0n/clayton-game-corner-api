@@ -13,5 +13,23 @@ upcomingRouter
             .then(upcomingGame => {
                 res.status(200).json(UpcomingService.serializeUpcomingGames(upcomingGame));
             });
+    })
+    .post(jsonParser, (req, res, next) => {
+        const { title, game_type, date } = req.body;
+        const newUpcomingGame = { title, game_type, date };
+        for (const [key, value] of Object.entries(newUpcomingGame)) {
+            if (value === null) {
+                return res.status(400).json({
+                    error: { message: `Missing '${key}' in request body` }
+                });
+            }
+        }
+        UpcomingService.insertGame(req.app.get('db'), newUpcomingGame)
+            .then(game => {
+                res.status(201)
+                    .json(UpcomingService.serializeUpcomingGame(game));
+            })
+            .catch(next);
+
     });
 module.exports = upcomingRouter;
