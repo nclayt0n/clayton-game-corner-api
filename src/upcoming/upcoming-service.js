@@ -21,6 +21,15 @@ const UpcomingService = {
                 'u.title',
                 'u.date',
                 'u.game_type'
+            ).where('u.date', '>=', new Date());
+    },
+    adminGetAllUpcomingGames(db) {
+        return db.from('cgc_upcoming_games AS u')
+            .select(
+                'u.id',
+                'u.title',
+                'u.date',
+                'u.game_type'
             );
     },
     getAllUpcomingGames(db) {
@@ -69,7 +78,7 @@ const UpcomingService = {
     getById(db, id) {
         let gameId = parseInt(id);
         console.log(gameId)
-        return UpcomingService.getAllUpcomingGames(db)
+        return UpcomingService.adminGetAllUpcomingGames(db)
             .where('u.id', gameId)
             .first();
     },

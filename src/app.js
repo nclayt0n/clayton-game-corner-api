@@ -8,6 +8,7 @@ const app = express();
 const usersRouter = require('./users/users-router');
 const authRouter = require('./auth/auth-router');
 const upcomingRouter = require('./upcoming/upcoming-router');
+const adminUpcomingRouter = require('./upcoming/admin-upcoming-router');
 const morganOptions = (NODE_ENV === 'production') ? 'tiny' : 'dev';
 
 
@@ -17,6 +18,7 @@ app.use(cors());
 app.use('/api/users', usersRouter);
 app.use(authRouter);
 app.use(upcomingRouter);
+app.use(adminUpcomingRouter);
 app.use(function errorHandler(error, req, res, next) {
     let response
     if (NODE_ENV === 'production') {
