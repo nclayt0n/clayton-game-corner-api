@@ -21,6 +21,15 @@ const UpcomingService = {
                 'u.title',
                 'u.date',
                 'u.game_type'
+            );
+    },
+    getAllUpcomingGames(db) {
+        return db.from('cgc_upcoming_games AS u')
+            .select(
+                'u.id',
+                'u.title',
+                'u.date',
+                'u.game_type'
             )
             .where('u.date', '>=', new Date());
     },
@@ -49,6 +58,20 @@ const UpcomingService = {
             .then(rows => {
                 return rows[0];
             });
+    },
+    deleteGame(db, id) {
+        return db('cgc_upcoming_games').where({ id }).delete();
+    },
+    updateGame(db, id, newGameFields) {
+        console.log(id)
+        return db('cgc_upcoming_games').where({ id }).update(newGameFields);
+    },
+    getById(db, id) {
+        let gameId = parseInt(id);
+        console.log(gameId)
+        return UpcomingService.getAllUpcomingGames(db)
+            .where('u.id', gameId)
+            .first();
     },
 };
 module.exports = UpcomingService;
