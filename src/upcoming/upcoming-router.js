@@ -8,7 +8,6 @@ const upcomingRouter = express.Router();
 upcomingRouter
     .route('/api/game/upcoming')
     .get((req, res, next) => {
-        // let user_id = UpcomingService.decodeAuthToken(req.headers);
         UpcomingService.getAllUpcomingGames(req.app.get('db'))
             .then(upcomingGame => {
                 res.status(200).json(UpcomingService.serializeUpcomingGames(upcomingGame));
@@ -34,6 +33,10 @@ upcomingRouter
     });
 upcomingRouter
     .route('/api/game/upcoming/:upcoming_id')
+    .all(checkGameExists)
+    .get((req, res) => {
+        res.json(UpcomingService.serializeUpcomingGame(res.game));
+    })
     .patch(jsonParser, (req, res, next) => {
         const { title, date, game_type } = req.body;
         const gameToUpdate = { title, date, game_type }
@@ -49,24 +52,24 @@ upcomingRouter
     })
 
 .delete((req, res, next) => {
-    FoldersService.deleteFolder(req.app.get('db'), req.params.folder_id)
+    UpcomingService.deleteGame(req.app.get('db'), req.params.upcoming_id)
         .then(numRowsAffected => {
             res.status(204).end();
         })
         .catch(next);
 });
-async function checkFolderExists(req, res, next) {
+async function checkGameExists(req, res, next) {
     try {
-        const folder = await FoldersService.getById(
+        const game = await UpcomingService.getById(
             req.app.get('db'),
-            req.params.folder_id
+            req.params.upcoming_id
         );
-        if (!folder) {
+        if (!game) {
             return res.status(404).json({
-                error: `Folder doesn't exist`
+                error: `Game doesn't exist`
             });
         }
-        res.folder = folder;
+        res.game = game;
         next();
     } catch (error) {
         next(error);

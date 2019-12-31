@@ -1,26 +1,97 @@
-# Express Boilerplate!
+# Clayton Game Corner API
 
-This is a boilerplate project used for starting new projects!
+Below is a list of endpoint, their methods, parameters to include if required, success response, error response, and sample call.
 
-## Set up
 
-Complete the following steps to start a new project (NEW-PROJECT-NAME):
+## `URL`
+/auth/login
 
-1. Clone this repository to your local machine `git clone BOILERPLATE-URL NEW-PROJECTS-NAME`
-2. `cd` into the cloned repository
-3. Make a fresh start of the git history for this project with `rm -rf .git && git init`
-4. Install the node dependencies `npm install`
-5. Move the example Environment file to `.env` that will be ignored by git and read by the express server `mv example.env .env`
-6. Edit the contents of the `package.json` to use NEW-PROJECT-NAME instead of `"name": "express-boilerplate",`
+### Purpose:
+For administrator to view their private admin pages.
+### Method:
+POST
 
-## Scripts
+### URL Params
+#### Required:
+ email=text, password=text, full_name=text
 
-Start the application `npm start`
+### Success Response
+Code:200<br/>
+content: {authToken}
 
-Start nodemon for the application `npm run dev`
+### Error Response
+code:400<br/>
+ Content:{error:'Missing key in request body'}<br/>
+ Content:{error: 'Incorrect email or password'}
 
-Run the tests `npm test`
+### Sample Call 
+    postLogin(email, password) {
+        let options = {
+            method: 'POST',
+            headers: {
+                'content-type': 'application/json',
+            },
+            body: JSON.stringify({ email: email, password: password }),
+        };
+        return fetch(`${config.API_ENDPOINT}/api/auth/login`, options)
+            .then(res =>
+                (!res.ok) ?
+                res.json().then(e => Promise.reject(e)) : res.json());
+    }
 
-## Deploying
+## `URL`
+/game/upcoming
 
-When your new project is ready for deployment, add a new Heroku application with `heroku create`. This will make a new git remote called "heroku" and you can then `npm run deploy` which will push to this remote's master branch.
+### Purpose:
+to Get all upcoming games, release date, and type.
+
+### Method:
+GET
+
+### URL Params
+#### Required:
+ title=text, date=text, game_type=game_type enum
+
+### Success Response
+Code:200<br/>
+content: {
+        "id": 1,
+        "title": "TEST GAME 1",
+        "date": "Mon Jan 20 2020 12:00:00 GMT-0500 (Eastern Standard Time)",
+        "game_type": "video"
+    },
+
+### Error Response
+code:400<br/>
+ Content:{error:'Missing key in request body'}<br/>
+
+### Sample Call 
+    
+## `URL`
+/game/upcoming
+
+### Purpose:
+to POST a new upcoming game with title, release date, and type.
+
+### Method:
+POST
+
+### URL Params
+#### Required:
+ title=text, date=text, game_type=game_type enum
+
+### Success Response
+Code:200<br/>
+content: {
+        "id": 1,
+        "title": "TEST GAME 1",
+        "date": "Mon Jan 20 2020 12:00:00 GMT-0500 (Eastern Standard Time)",
+        "game_type": "video"
+    },
+
+### Error Response
+code:400<br/>
+ Content:{error:'Missing key in request body'}<br/>
+
+### Sample Call 
+
