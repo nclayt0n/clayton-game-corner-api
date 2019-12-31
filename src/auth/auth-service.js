@@ -5,7 +5,7 @@ const config = require('../config');
 
 const AuthService = {
     getUserWithEmail(db, email) {
-        return db('recipebox_users')
+        return db('cgc_users')
             .where({ email })
             .first();
     },
