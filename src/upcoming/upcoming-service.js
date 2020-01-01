@@ -77,7 +77,6 @@ const UpcomingService = {
     },
     getById(db, id) {
         let gameId = parseInt(id);
-        console.log(gameId)
         return UpcomingService.adminGetAllUpcomingGames(db)
             .where('u.id', gameId)
             .first();
