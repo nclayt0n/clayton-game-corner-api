@@ -31,7 +31,7 @@ describe('Upcoming Game Endpoints', function() {
                     testUpcomings,
                 )
             );
-            it('responds 200 with all reviews', () => {
+            it('responds 200', () => {
                 return supertest(app)
                     .get('/api/admin/game/upcoming')
                     .expect(200);
@@ -46,7 +46,7 @@ describe('Upcoming Game Endpoints', function() {
                     testUpcomings,
                 )
             );
-            it('responds 200 with all reviews', () => {
+            it('responds 200 ', () => {
                 return supertest(app)
                     .get('/api/game/upcoming')
                     .expect(200);
@@ -61,7 +61,6 @@ describe('Upcoming Game Endpoints', function() {
                     testUpcomings,
                 )
             );
-
             it(`responds 201 ,seralized Upcoming Game`, () => {
                 return supertest(app)
                     .post('/api/game/upcoming')
@@ -94,10 +93,85 @@ describe('Upcoming Game Endpoints', function() {
                             expect(row.picture).to.eql(testUpcoming.picture);
                         })
                     );
-
             });
-
         });
     });
+    describe(`GET /api/game/upcoming/:upcoming_id`, () => {
+        context(`Given no upcoming games`, () => {
+            it(`responds with 404`, () => {
+                const upcomingId = 123456;
+                return supertest(app)
+                    .get(`/api/game/upcoming/${upcomingId}`)
+                    .expect(404);
+            });
+        });
+        context('Given there are upcoming games in the database', () => {
+            const testUpcomings = helpers.makeUpcomingsArray();
+            beforeEach(() => helpers.seedUpcomingTable(
+                db,
+                testUpcomings
+            ));
 
+            it('removes the game by ID', () => {
+                const idToRemove = 1;
+                return supertest(app)
+                    .get(`/api/game/upcoming/${idToRemove}`)
+                    .expect(200);
+            });
+        });
+    });
+    describe(`DELETE /api/game/upcoming/:upcoming_id`, () => {
+        context(`Given no games`, () => {
+            it(`responds with 404`, () => {
+                const upcomingId = 1;
+                return supertest(app)
+                    .delete(`/api/game/upcoming/${upcomingId}`)
+                    .expect(404);
+            });
+        });
+        context('Given there are upcoming games in the database', () => {
+            const testUpcomings = helpers.makeUpcomingsArray();
+            beforeEach(() => helpers.seedUpcomingTable(
+                db,
+                testUpcomings
+            ));
+
+            it('removes the game by ID', () => {
+                const idToRemove = 1;
+                return supertest(app)
+                    .delete(`/api/game/upcoming/${idToRemove}`)
+                    .expect(204);
+            });
+        });
+    });
+    describe(`PATCH /api/game/upcoming/:upcoming_id`, () => {
+        context(`Given no games`, () => {
+            it(`responds with 404`, () => {
+                const upcomingId = 123456;
+                return supertest(app)
+                    .patch(`/api/game/upcoming/${upcomingId}`)
+                    .expect(404);
+            });
+        });
+        context(`With games`, () => {
+            beforeEach(() => helpers.seedUpcomingTable(
+                db,
+                testUpcomings
+            ));
+            it(`responds with 204`, () => {
+                const upcomingId = 1;
+                const updatedUpcoming = {
+                    "title": "Upcoming test Game 1",
+                    "date": "02/01/2020",
+                    "game_type": "tabletop"
+                };
+
+                return supertest(app)
+                    .patch(`/api/game/upcoming/${upcomingId}`)
+                    .send(updatedUpcoming)
+
+                .expect(204);
+            });
+        });
+    });
 });
