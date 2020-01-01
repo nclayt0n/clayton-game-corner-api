@@ -13,6 +13,28 @@ const ReviewService = {
                 'r.game_type'
             );
     },
+    getAllTabletopReviews(db) {
+        return db.from('cgc_game_reviews AS r')
+            .select(
+                'r.id',
+                'r.title',
+                'r.picture',
+                'r.review',
+                'r.link',
+                'r.game_type'
+            ).where('r.game_type', '=', 'tabletop');
+    },
+    getAllVideoReviews(db) {
+        return db.from('cgc_game_reviews AS r')
+            .select(
+                'r.id',
+                'r.title',
+                'r.picture',
+                'r.review',
+                'r.link',
+                'r.game_type'
+            ).where('r.game_type', '=', 'video');
+    },
     serializeReviews(reviews) {
         return reviews.map(this.serializeReview);
     },

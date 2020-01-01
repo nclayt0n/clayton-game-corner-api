@@ -31,6 +31,22 @@ reviewRouter
             .catch(next);
     });
 reviewRouter
+    .route('/api/game/review/tabletop')
+    .get((req, res, next) => {
+        ReviewService.getAllTabletopReviews(req.app.get('db'))
+            .then(reviews => {
+                res.status(200).json(ReviewService.serializeReviews(reviews));
+            });
+    });
+reviewRouter
+    .route('/api/game/review/video')
+    .get((req, res, next) => {
+        ReviewService.getAllVideoReviews(req.app.get('db'))
+            .then(reviews => {
+                res.status(200).json(ReviewService.serializeReviews(reviews));
+            });
+    });
+reviewRouter
     .route('/api/game/review/:review_id')
     .all(checkGameExists)
     .get((req, res) => {
