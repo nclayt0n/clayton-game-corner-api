@@ -1,6 +1,7 @@
 const xss = require('xss');
 const Treeize = require('treeize');
 const atob = require('atob');
+const moment = require('moment');
 
 const UpcomingService = {
     decodeAuthToken(header) {
@@ -37,10 +38,12 @@ const UpcomingService = {
             .select(
                 'u.id',
                 'u.title',
-                'u.date',
+                db.raw(
+                    `to_char(u.date,'MM/DD/YYYY') as date`
+                ),
                 'u.game_type'
             )
-            .where('u.date', '>=', new Date());
+            .where('date', '>=', new Date());
     },
     serializeUpcomingGames(upcomingGames) {
         return upcomingGames.map(this.serializeUpcomingGame);
@@ -62,8 +65,14 @@ const UpcomingService = {
     },
     insertGame(db, newUpcomingGame) {
         return db.insert(newUpcomingGame)
-            .into('cgc_upcoming_games')
-            .returning('*')
+            .into('cgc_upcoming_games AS u')
+            .returning(['u.id',
+                'u.title',
+                db.raw(
+                    `to_char(u.date,'MM/DD/YYYY') as date`
+                ),
+                'u.game_type'
+            ])
             .then(rows => {
                 return rows[0];
             });
@@ -72,7 +81,6 @@ const UpcomingService = {
         return db('cgc_upcoming_games').where({ id }).delete();
     },
     updateGame(db, id, newGameFields) {
-        console.log(id)
         return db('cgc_upcoming_games').where({ id }).update(newGameFields);
     },
     getById(db, id) {

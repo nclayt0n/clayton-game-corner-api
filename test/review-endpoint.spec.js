@@ -1,12 +1,9 @@
 const knex = require('knex');
-const bcrpyt = require('bcryptjs');
 const app = require('../src/app');
 const helpers = require('./test-helpers');
 const xss = require('xss');
-const chai = require('chai');
-const assert = chai.assert;
 
-describe.only('Review Endpoints', function() {
+describe('Review Endpoints', function() {
     let db;
 
     const { testReviews } = helpers.makeCGCFixtures();

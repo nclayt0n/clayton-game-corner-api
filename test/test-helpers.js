@@ -73,7 +73,7 @@ function makeReviewsArray() {
     return reviews;
 }
 
-function makeUpcomingArray() {
+function makeUpcomingsArray() {
     return [{
             "title": "Upcoming test Game 1",
             "date": "02/01/2020",
@@ -135,9 +135,9 @@ function makeExpectedUpcoming() {
 
 function makeCGCFixtures() {
     const testUsers = makeUsersArray();
-    const testUpcoming = makeUpcomingArray();
+    const testUpcomings = makeUpcomingsArray();
     const testReviews = makeReviewsArray();
-    return { testUsers, testReviews, testUpcoming };
+    return { testUsers, testReviews, testUpcomings };
 }
 
 function makeAuthHeader(user, secret = process.env.JWT_SECRET) {
@@ -148,9 +148,8 @@ function makeAuthHeader(user, secret = process.env.JWT_SECRET) {
     return `Bearer ${token}`;
 }
 
-function seedUpcomingTable(db, users, upcomingGames) {
+function seedUpcomingTable(db, upcomingGames) {
     return db.transaction(async trx => {
-        await seedUsers(trx, users);
         await trx.into('cgc_upcoming_games').insert(upcomingGames);
         // await trx.raw(
         //     `SELECT setval('recipebox_recipes_id_seq',?)`, [recipes[recipes.length - 1].id]
@@ -175,7 +174,7 @@ module.exports = {
     makeReviewsArray,
     cleanTables,
     makeExpectedReview,
-    makeUpcomingArray,
+    makeUpcomingsArray,
     seedUpcomingGames,
     makeExpectedUpcoming,
     makeAuthHeader,

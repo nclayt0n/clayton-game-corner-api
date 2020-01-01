@@ -66,7 +66,6 @@ const ReviewService = {
             });
     },
     updateReview(db, id, newReviewFields) {
-        console.log(id)
         return db('cgc_game_reviews').where({ id }).update(newReviewFields);
     },
     deleteReview(db, id) {
