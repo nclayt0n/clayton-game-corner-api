@@ -124,7 +124,7 @@ function seedUpcomingGames(db, upcomingGames) {
     return db.into('cgc_upcoming_games').insert(upcomingGames);
 }
 
-function makeExpectedUpcoming(upcomingGame) {
+function makeExpectedUpcoming() {
     return {
         id: 1,
         "title": "Upcoming test Game 3",
@@ -159,13 +159,11 @@ function seedUpcomingTable(db, users, upcomingGames) {
 }
 
 
-function seedReviewsTables(db, users, reviews, upcomingGames) {
+function seedReviewsTables(db, reviews) {
     return db.transaction(async trx => {
-        await seedUsers(trx, users);
-        await seedFolders(trx, upcomingGames);
-        await trx.into('recipebox_recipes').insert(reviews);
+        await trx.into('cgc_game_reviews').insert(reviews);
         // await trx.raw(
-        //     `SELECT setval('recipebox_recipes_id_seq',?)`, [recipes[recipes.length - 1].id]
+        //     `SELECT setval('cgc_game_reviews_id_seq',?)`, [reviews[reviews.length - 1].id]
         // );
     });
 }

@@ -54,7 +54,7 @@ reviewRouter
     })
     .patch(jsonParser, (req, res, next) => {
         const { title, game_type, link, picture, review } = req.body;
-        const reviewToUpdate = { title, game_type, link, picture, review }
+        const reviewToUpdate = { title, game_type, link, picture, review };
         const numberOfValues = Object.values(reviewToUpdate).filter(Boolean).length;
         if (numberOfValues === 0) {
             return res.status(400).json({ error: { message: `Request body must contain title, game type, review` } });

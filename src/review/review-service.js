@@ -46,7 +46,7 @@ const ReviewService = {
         // object.
         const reviewData = reviewTree.grow([review]).getData()[0];
 
-        return {
+        const r = {
             id: reviewData.id,
             title: xss(reviewData.title),
             picture: xss(reviewData.picture),
@@ -54,6 +54,8 @@ const ReviewService = {
             link: xss(reviewData.link),
             game_type: xss(review.game_type)
         };
+
+        return r;
     },
     insertReview(db, newReview) {
         return db.insert(newReview)
