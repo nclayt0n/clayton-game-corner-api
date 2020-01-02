@@ -3,7 +3,7 @@ CREATE TABLE cgc_users(
     full_name TEXT NOT NULL,
     email  text NOT NULL UNIQUE,
     password TEXT NOT NULL,
-    bio text not null,
+    bio text,
     date_created TIMESTAMP NOT NULL DEFAULT now(),
   date_modified TIMESTAMP
 );
