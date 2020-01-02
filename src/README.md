@@ -40,6 +40,62 @@ code:400<br/>
     }
 
 ## `URL`
+/users
+
+### Purpose:
+to POST credentials for site admin.
+### Method:
+POST
+
+### URL Params
+#### Required:
+ email=text, password=text, full_name=text, bio=text
+
+### Success Response
+Code:200<br/>
+
+### Error Response
+code:400<br/>
+ Content:{error:'Email already in use'}<br/>
+
+### Sample Call 
+
+## `URL`
+/users/:user_id
+
+### Purpose:
+to DELETE credentials.
+### Method:
+DELETE
+
+### URL Params
+#### Required:
+ id=integer
+
+### Success Response
+Code:204<br/>
+
+### Sample Call 
+
+
+## `URL`
+/users/:user_id
+
+### Purpose:
+to GET admin bio.
+### Method:
+GET
+
+### URL Params
+#### Required:
+ id=integer
+
+### Success Response
+Code:200<br/>
+
+### Sample Call 
+
+## `URL`
 /game/upcoming
 
 ### Purpose:
