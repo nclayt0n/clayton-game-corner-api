@@ -24,7 +24,8 @@ const UpcomingService = {
                     `to_char(u.date,'MM/DD/YYYY') as date`
                 ),
                 'u.game_type'
-            );
+            )
+            .orderBy('date', 'asc');
     },
     getAllUpcomingGames(db) {
         return db.from('cgc_upcoming_games AS u')
@@ -36,7 +37,8 @@ const UpcomingService = {
                 ),
                 'u.game_type'
             )
-            .where('date', '>=', new Date());
+            .where('date', '>=', new Date())
+            .orderBy('date', 'asc');
     },
     serializeUpcomingGames(upcomingGames) {
         return upcomingGames.map(this.serializeUpcomingGame);
