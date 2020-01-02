@@ -15,21 +15,14 @@ const UpcomingService = {
 
         return user_id;
     },
-    getAllUpcomingGames(db) {
-        return db.from('cgc_upcoming_games AS u')
-            .select(
-                'u.id',
-                'u.title',
-                'u.date',
-                'u.game_type'
-            ).where('u.date', '>=', new Date());
-    },
     adminGetAllUpcomingGames(db) {
         return db.from('cgc_upcoming_games AS u')
             .select(
                 'u.id',
                 'u.title',
-                'u.date',
+                db.raw(
+                    `to_char(u.date,'MM/DD/YYYY') as date`
+                ),
                 'u.game_type'
             );
     },
