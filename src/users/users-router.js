@@ -4,9 +4,10 @@ const UsersService = require('./users-service');
 const usersRouter = express.Router();
 const jsonBodyParser = express.json();
 
+
 usersRouter
-    .post('/api/users', jsonBodyParser, (req, res, next) => {
-        const { password, email, full_name } = req.body;
+    .post('/', jsonBodyParser, (req, res, next) => {
+        const { password, email, full_name, bio } = req.body;
         for (const field of['full_name', 'email', 'password']) {
             if (!req.body[field]) {
                 return res.status(400).json({
@@ -33,6 +34,7 @@ usersRouter
                             email,
                             full_name,
                             date_created: 'now()',
+                            bio
                         };
 
                         return UsersService.insertUser(
@@ -42,18 +44,23 @@ usersRouter
                             .then(user => {
                                 res.status(201)
                                     .location(path.posix.join(req.originalUrl, `${user.id}`))
-                                    .json(UsersService.serializeUser(user));
+                                    .end();
                             });
                     });
             })
             .catch(next);
     })
-
-.delete('/:user_id', (req, res, next) => {
-    UsersService.deleteUser(req.app.get('db'), req.params.user_id)
-        .then(numRowsAffected => {
-            res.status(204).end();
-        })
-        .catch(next);
-});
+    .get('/:user_id', (req, res, next) => {
+        UsersService.getBio(req.app.get('db'), parseInt(req.params.user_id))
+            .then(users => {
+                res.status(200).json(UsersService.serializeUserBios(users));
+            });
+    })
+    .delete('/:user_id', (req, res, next) => {
+        UsersService.deleteUser(req.app.get('db'), req.params.user_id)
+            .then(numRowsAffected => {
+                res.status(204).end();
+            })
+            .catch(next);
+    });
 module.exports = usersRouter;

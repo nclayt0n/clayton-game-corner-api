@@ -1,3 +1,4 @@
+const Treeize = require('treeize');
 const xss = require('xss');
 const bcrypt = require('bcryptjs');
 const REGEX_UPPER_LOWER_NUMBER_SPECIAL = /(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&])[\S]+/
@@ -36,16 +37,40 @@ const UsersService = {
             .then(([user]) => user);
 
     },
+    getBio(db, id) {
+        return db('cgc_users AS u').where({ id })
+            .select(
+                'u.id',
+                'u.bio'
+            );
+    },
+    serializeUserBios(users) {
+        return users.map(this.serializeUserBio);
+    },
+    serializeUserBio(user) {
+        const userBioTree = new Treeize();
+
+        // Some light hackiness to allow for the fact that `treeize`
+        // only accepts arrays of objects, and we want to use a single
+        // object.
+        const userBioData = userBioTree.grow([user]).getData()[0];
+
+        return {
+            bio: userBioData.bio,
+
+        };
+    },
     serializeUser(user) {
         return {
             id: user.id,
             full_name: xss(user.full_name),
             email: xss(user.email),
-            date_created: new Date(user.date_created)
+            date_created: new Date(user.date_created),
+            bio: xss(user.bio)
         };
     },
     deleteUser(db, id) {
-        return db('cgc_users').where({ id }).delete();
+        return db('cgc_users AS u').where({ id }).delete();
     }
 };
 module.exports = UsersService;

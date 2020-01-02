@@ -7,21 +7,25 @@ function makeUsersArray() {
             email: 'test-user-1@aol.com',
             full_name: 'TU1',
             password: '$2a$12$3JY0O7bXmhkizMdVwBQd5uVVKNVi4TYTjClJyFgBs/ZJyNVoIzM76',
+            bio: 'User bio 1'
         },
         {
             email: 'test-user-2@gm.com',
             full_name: 'Test user 2',
             password: '$2a$12$3JY0O7bXmhkizMdVwBQd5uVVKNVi4TYTjClJyFgBs/ZJyNVoIzM76',
+            bio: 'User bio 2'
         },
         {
             email: 'test-user-3@out.com',
             full_name: 'Test user 3',
             password: '$2a$12$3JY0O7bXmhkizMdVwBQd5uVVKNVi4TYTjClJyFgBs/ZJyNVoIzM76',
+            bio: 'User bio 3'
         },
         {
             email: 'test-user-4@out.com',
             full_name: 'Test user 4',
             password: '$2a$12$3JY0O7bXmhkizMdVwBQd5uVVKNVi4TYTjClJyFgBs/ZJyNVoIzM76',
+            bio: 'User bio 4'
         },
     ];
 }
