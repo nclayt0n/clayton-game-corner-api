@@ -11,7 +11,8 @@ const ReviewService = {
                 'r.review',
                 'r.link',
                 'r.game_type'
-            );
+            )
+            .orderBy('r.title', 'asc');
     },
     getAllTabletopReviews(db, query) {
         if (query.limit !== undefined && query.offset !== undefined) {
@@ -23,7 +24,9 @@ const ReviewService = {
                     'r.review',
                     'r.link',
                     'r.game_type'
-                ).where('r.game_type', '=', 'tabletop')
+                )
+                .orderBy('r.title', 'asc')
+                .where('r.game_type', '=', 'tabletop')
                 .limit(parseInt(query.limit))
                 .offset(parseInt(query.offset));
         } else {
@@ -35,7 +38,9 @@ const ReviewService = {
                     'r.review',
                     'r.link',
                     'r.game_type'
-                ).where('r.game_type', '=', 'tabletop');
+                )
+                .orderBy('r.title', 'asc')
+                .where('r.game_type', '=', 'tabletop');
         }
 
     },
@@ -49,7 +54,9 @@ const ReviewService = {
                     'r.review',
                     'r.link',
                     'r.game_type'
-                ).where('r.game_type', '=', 'video')
+                )
+                .orderBy('r.title', 'asc')
+                .where('r.game_type', '=', 'video')
                 .limit(parseInt(query.limit))
                 .offset(parseInt(query.offset));
         } else {
@@ -61,7 +68,9 @@ const ReviewService = {
                     'r.review',
                     'r.link',
                     'r.game_type'
-                ).where('r.game_type', '=', 'video');
+                )
+                .orderBy('r.title', 'asc')
+                .where('r.game_type', '=', 'video');
         }
     },
     serializeReviews(reviews) {
