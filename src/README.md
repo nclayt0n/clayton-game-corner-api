@@ -25,7 +25,6 @@ code:400<br/>
  Content:{error: 'Incorrect email or password'}
 
 ### Sample Call 
-    postLogin(email, password) {
         let options = {
             method: 'POST',
             headers: {
@@ -33,11 +32,10 @@ code:400<br/>
             },
             body: JSON.stringify({ email: email, password: password }),
         };
-        return fetch(`${config.API_ENDPOINT}/api/auth/login`, options)
+        fetch(API_ENDPOINT/auth/login, options)
             .then(res =>
                 (!res.ok) ?
                 res.json().then(e => Promise.reject(e)) : res.json());
-    }
 
 ## `URL`
 /users
@@ -59,6 +57,17 @@ code:400<br/>
  Content:{error:'Email already in use'}<br/>
 
 ### Sample Call 
+        let options = {
+            method: 'POST',
+            headers: {
+                'content-type': 'application/json',
+            },
+            body: JSON.stringify({ email: email, password: password bio}),
+        };
+        fetch(API_ENDPOINT/users, options)
+            .then(res =>
+                (!res.ok) ?
+                res.json().then(e => Promise.reject(e)) : res.json());
 
 ## `URL`
 /users/:user_id
@@ -75,8 +84,14 @@ DELETE
 ### Success Response
 Code:204<br/>
 
-### Sample Call 
-
+### Sample Call
+    let options = {
+        method: 'DELETE',
+        headers: {
+            'content-type': 'application/json',
+        }
+    };
+    fetch(API_ENDPOINT/users/:user_id, options)
 
 ## `URL`
 /users/:user_id
@@ -94,6 +109,19 @@ GET
 Code:200<br/>
 
 ### Sample Call 
+   let options = {
+            method: 'GET',
+            headers: {
+                'content-type': 'application/json',
+            }
+        };
+    fetch(API_ENDPOINT/users/:user_id, options)
+        .then(res =>
+            (!res.ok) ? res.json().then(e => Promise.reject(e)) : res.json()
+            );
+        .catch(error => {
+            this.setState({ error });
+        });
 
 ## `URL`
 /game/upcoming
@@ -125,7 +153,21 @@ code:400<br/>
  Content:{error:'Missing key in request body'}<br/>
 
 ### Sample Call 
-    
+        let options = {
+            method: 'GET',
+            headers: {
+                'content-type': 'application/json',
+            }
+        };
+        fetch(API_ENDPOINT/game/upcoming?limit=${this.state.pageLimit}&offset=${this.state.page*this.state.pageLimit}, options)
+            .then(res =>
+                (!res.ok) ? res.json().then(e => Promise.reject(e)) : res.json()
+            );
+            .catch(error => {
+                this.setState({ error });
+            }); 
+
+
 ## `URL`
 /game/upcoming
 
@@ -153,6 +195,18 @@ code:400<br/>
  Content:{error:'Missing key in request body'}<br/>
 
 ### Sample Call 
+        let options = {
+            method: 'POST',
+            headers: {
+                'content-type': 'application/json',
+            },
+            body: JSON.stringify({ date, game_type, title }),
+        };
+        fetch(API_ENDPOINT/game/upcoming, options)
+            .then(res =>
+                (!res.ok) ?
+                res.json().then(e => Promise.reject(e)) : res.json());
+    },
 
 ## `URL`
 /game/upcoming/:upcoming_id
@@ -181,6 +235,15 @@ code:400<br/>
  Content:{error:'Game doesn't exist'}<br/>
 
 ### Sample Call 
+        const { id, title, date, game_type } = updatedGame;
+        const options = {
+            method: 'PATCH',
+            headers: {
+                'content-type': 'application/json',
+            },
+            body: JSON.stringify({ id, title, date, game_type })
+        };
+        return fetch(API_ENDPOINT/game/upcoming/:upcoming_id, options)
 
 ## `URL`
 /game/upcoming/:upcoming_id
@@ -209,6 +272,20 @@ code:400<br/>
  Content:{error:'Game doesn't exist'}<br/>
 
 ### Sample Call 
+        let options = {
+            method: 'GET',
+            headers: {
+                'content-type': 'application/json',
+            }
+        };
+        fetch(API_ENDPOINT/game/upcoming/:upcoming_id, options)
+            .then(res =>
+                (!res.ok) ? res.json().then(e => Promise.reject(e)) : res.json()
+            );
+            .catch(error => {
+                this.setState({ error });
+            }); 
+
 ## `URL`
 /game/upcoming/:upcoming_id
 
@@ -236,8 +313,13 @@ code:400<br/>
  Content:{error:'Game doesn't exist'}<br/>
 
 ### Sample Call 
-
-
+    let options = {
+        method: 'DELETE',
+        headers: {
+            'content-type': 'application/json',
+        }
+    };
+    fetch(API_ENDPOINT/upcoming/:upcoming_id, options)
 
 ## `URL`
 /admin/game/upcoming
@@ -308,6 +390,19 @@ content: {
     },
 
 ### Sample Call 
+let options = {
+    method: 'GET',
+    headers: {
+        'content-type': 'application/json',
+    }
+};
+fetch(API_ENDPOINT/admin/game/upcoming?limit=${this.state.pageLimit}&offset=${this.state.page*this.state.pageLimit}, options)
+    .then(res =>
+        (!res.ok) ? res.json().then(e => Promise.reject(e)) : res.json()
+    );
+    .catch(error => {
+        this.setState({ error });
+    }); 
 
 ## `URL`
 /game/review
@@ -340,9 +435,20 @@ code:400<br/>
  Content:{error:'Missing key in request body'}<br/>
 
 ### Sample Call
+let options = {
+    method: 'POST',
+    headers: {
+        'content-type': 'application/json',
+    },
+    body: JSON.stringify({ title, game_type, link, picture, review }),
+};
+fetch(API_ENDPOINT}/game/review, options)
+    .then(res =>
+        (!res.ok) ?
+        res.json().then(e => Promise.reject(e)) : res.json());
 
 ## `URL`
-/admin/game/review/tabletop
+/game/review/tabletop
 
 ### Purpose:
 to GET existing game reviews from Database where game_type='tabletop'.
@@ -366,9 +472,19 @@ content: {
     }
 
 ### Sample Call 
+        let options = {
+            method: 'GET',
+            headers: {
+                'content-type': 'application/json',
+            }
+        };
+        return fetch(API_ENDPOINT/game/review/tabletop, options)
+            .then(res =>
+                (!res.ok) ? res.json().then(e => Promise.reject(e)) : res.json()
+            );
 
 ## `URL`
-/admin/game/review/video
+/game/review/video
 
 ### Purpose:
 to GET existing game reviews from Database where game_type='video'.
@@ -392,6 +508,16 @@ content: {
     }
 
 ### Sample Call 
+        let options = {
+            method: 'GET',
+            headers: {
+                'content-type': 'application/json',
+            }
+        };
+        return fetch(API_ENDPOINT/game/review/video, options)
+            .then(res =>
+                (!res.ok) ? res.json().then(e => Promise.reject(e)) : res.json()
+            );
 
 ## `URL`
 /game/review/:review_id
@@ -414,6 +540,13 @@ code:400<br/>
  Content:{error:'Review doesn't exist'}<br/>
 
 ### Sample Call 
+    let options = {
+        method: 'DELETE',
+        headers: {
+            'content-type': 'application/json',
+        }
+    };
+    fetch(API_ENDPOINT/review/:review_id, options)
 
 ## `URL`
 /game/review/:review_id
@@ -440,3 +573,12 @@ code:400<br/>
  Content:{error:'Request body must contain title, game type, review'}<br/>
 
 ### Sample Call 
+    const { id, title, game_type, link, picture, review } = updatedReview;
+        const options = {
+            method: 'PATCH',
+            headers: {
+                'content-type': 'application/json',
+            },
+            body: JSON.stringify({ id, title, game_type, link, picture, review })
+        };
+        return fetch(API_ENDPOINT/game/review/:review_id, options)
