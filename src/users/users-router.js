@@ -56,6 +56,15 @@ usersRouter
                 res.status(200).json(UsersService.serializeUserBios(users));
             });
     })
+    .patch('/:user_id', jsonBodyParser, (req, res, next) => {
+        const { bio } = req.body;
+        const bioToUpdate = { bio };
+        UsersService.updateBio(req.app.get('db'), parseInt(req.params.user_id), bioToUpdate)
+            .then(numRowsAffected => {
+                res.status(204).end();
+            })
+            .catch(next);
+    })
     .delete('/:user_id', (req, res, next) => {
         UsersService.deleteUser(req.app.get('db'), req.params.user_id)
             .then(numRowsAffected => {

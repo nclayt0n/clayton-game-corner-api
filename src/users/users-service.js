@@ -28,7 +28,9 @@ const UsersService = {
     hashPassword(password) {
         return bcrypt.hash(password, 12);
     },
-
+    updateBio(db, id, newUserFields) {
+        return db('cgc_users').where({ id }).update(newUserFields);
+    },
     insertUser(db, newUser) {
         return db
             .insert(newUser)
