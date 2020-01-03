@@ -33,7 +33,7 @@ reviewRouter
 reviewRouter
     .route('/api/game/review/tabletop')
     .get((req, res, next) => {
-        ReviewService.getAllTabletopReviews(req.app.get('db'))
+        ReviewService.getAllTabletopReviews(req.app.get('db'), req.query)
             .then(reviews => {
                 res.status(200).json(ReviewService.serializeReviews(reviews));
             });
@@ -41,7 +41,7 @@ reviewRouter
 reviewRouter
     .route('/api/game/review/video')
     .get((req, res, next) => {
-        ReviewService.getAllVideoReviews(req.app.get('db'))
+        ReviewService.getAllVideoReviews(req.app.get('db'), req.query)
             .then(reviews => {
                 res.status(200).json(ReviewService.serializeReviews(reviews));
             });
@@ -77,7 +77,8 @@ async function checkGameExists(req, res, next) {
     try {
         const review = await ReviewService.getById(
             req.app.get('db'),
-            req.params.review_id
+            req.params.review_id,
+            req.query
         );
         if (!review) {
             return res.status(404).json({

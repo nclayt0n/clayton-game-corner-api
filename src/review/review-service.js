@@ -13,27 +13,56 @@ const ReviewService = {
                 'r.game_type'
             );
     },
-    getAllTabletopReviews(db) {
-        return db.from('cgc_game_reviews AS r')
-            .select(
-                'r.id',
-                'r.title',
-                'r.picture',
-                'r.review',
-                'r.link',
-                'r.game_type'
-            ).where('r.game_type', '=', 'tabletop');
+    getAllTabletopReviews(db, query) {
+        if (query.limit !== undefined && query.offset !== undefined) {
+            return db.from('cgc_game_reviews AS r')
+                .select(
+                    'r.id',
+                    'r.title',
+                    'r.picture',
+                    'r.review',
+                    'r.link',
+                    'r.game_type'
+                ).where('r.game_type', '=', 'tabletop')
+                .limit(parseInt(query.limit))
+                .offset(parseInt(query.offset));
+        } else {
+            return db.from('cgc_game_reviews AS r')
+                .select(
+                    'r.id',
+                    'r.title',
+                    'r.picture',
+                    'r.review',
+                    'r.link',
+                    'r.game_type'
+                ).where('r.game_type', '=', 'tabletop');
+        }
+
     },
-    getAllVideoReviews(db) {
-        return db.from('cgc_game_reviews AS r')
-            .select(
-                'r.id',
-                'r.title',
-                'r.picture',
-                'r.review',
-                'r.link',
-                'r.game_type'
-            ).where('r.game_type', '=', 'video');
+    getAllVideoReviews(db, query) {
+        if (query.limit !== undefined && query.offset !== undefined) {
+            return db.from('cgc_game_reviews AS r')
+                .select(
+                    'r.id',
+                    'r.title',
+                    'r.picture',
+                    'r.review',
+                    'r.link',
+                    'r.game_type'
+                ).where('r.game_type', '=', 'video')
+                .limit(parseInt(query.limit))
+                .offset(parseInt(query.offset));
+        } else {
+            return db.from('cgc_game_reviews AS r')
+                .select(
+                    'r.id',
+                    'r.title',
+                    'r.picture',
+                    'r.review',
+                    'r.link',
+                    'r.game_type'
+                ).where('r.game_type', '=', 'video');
+        }
     },
     serializeReviews(reviews) {
         return reviews.map(this.serializeReview);
@@ -71,9 +100,9 @@ const ReviewService = {
     deleteReview(db, id) {
         return db('cgc_game_reviews').where({ id }).delete();
     },
-    getById(db, id) {
+    getById(db, id, query) {
         let reviewId = parseInt(id);
-        return ReviewService.getAllReviews(db)
+        return ReviewService.getAllReviews(db, query)
             .where('r.id', reviewId)
             .first();
     },
