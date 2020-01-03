@@ -8,7 +8,7 @@ const upcomingRouter = express.Router();
 upcomingRouter
     .route('/api/game/upcoming')
     .get((req, res, next) => {
-        UpcomingService.getAllUpcomingGames(req.app.get('db'))
+        UpcomingService.getAllUpcomingGames(req.app.get('db'), req.query)
             .then(upcomingGame => {
                 res.status(200).json(UpcomingService.serializeUpcomingGames(upcomingGame));
             });
@@ -34,7 +34,7 @@ upcomingRouter
 upcomingRouter
     .route('/api/admin/game/upcoming')
     .get((req, res, next) => {
-        UpcomingService.adminGetAllUpcomingGames(req.app.get('db'))
+        UpcomingService.adminGetAllUpcomingGames(req.app.get('db'), req.query)
             .then(upcomingGame => {
                 res.status(200).json(UpcomingService.serializeUpcomingGames(upcomingGame));
             });

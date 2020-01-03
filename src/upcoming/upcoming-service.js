@@ -15,30 +15,65 @@ const UpcomingService = {
 
         return user_id;
     },
-    adminGetAllUpcomingGames(db) {
-        return db.from('cgc_upcoming_games AS u')
-            .select(
-                'u.id',
-                'u.title',
-                db.raw(
-                    `to_char(u.date,'MM/DD/YYYY') as date`
-                ),
-                'u.game_type'
-            )
-            .orderBy('date', 'asc');
+    adminGetAllUpcomingGames(db, query) {
+        if (query.limit !== undefined && query.offset !== undefined) {
+            return db.from('cgc_upcoming_games AS u')
+                .select(
+                    'u.id',
+                    'u.title',
+                    db.raw(
+                        `to_char(u.date,'MM/DD/YYYY') as date`
+                    ),
+                    'u.game_type'
+                )
+                .orderBy('date', 'asc')
+                .limit(parseInt(query.limit))
+                .offset(parseInt(query.offset));
+        }
+        if (query.limit == 0) {
+            return db.from('cgc_upcoming_games AS u')
+                .select(
+                    'u.id',
+                    'u.title',
+                    db.raw(
+                        `to_char(u.date,'MM/DD/YYYY') as date`
+                    ),
+                    'u.game_type'
+                )
+                .orderBy('date', 'asc');
+        }
+
+
     },
-    getAllUpcomingGames(db) {
-        return db.from('cgc_upcoming_games AS u')
-            .select(
-                'u.id',
-                'u.title',
-                db.raw(
-                    `to_char(u.date,'MM/DD/YYYY') as date`
-                ),
-                'u.game_type'
-            )
-            .where('date', '>=', new Date())
-            .orderBy('date', 'asc');
+    getAllUpcomingGames(db, query) {
+        if (query.limit !== undefined && query.offset !== undefined) {
+            return db.from('cgc_upcoming_games AS u')
+                .select(
+                    'u.id',
+                    'u.title',
+                    db.raw(
+                        `to_char(u.date,'MM/DD/YYYY') as date`
+                    ),
+                    'u.game_type'
+                )
+                .where('date', '>=', new Date())
+                .orderBy('date', 'asc')
+                .limit(parseInt(query.limit))
+                .offset(parseInt(query.offset));
+        }
+        if (query.limit === undefined && query.offset === undefined) {
+            return db.from('cgc_upcoming_games AS u')
+                .select(
+                    'u.id',
+                    'u.title',
+                    db.raw(
+                        `to_char(u.date,'MM/DD/YYYY') as date`
+                    ),
+                    'u.game_type'
+                )
+                .where('date', '>=', new Date())
+                .orderBy('date', 'asc');
+        }
     },
     serializeUpcomingGames(upcomingGames) {
         return upcomingGames.map(this.serializeUpcomingGame);
