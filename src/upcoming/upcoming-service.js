@@ -29,8 +29,7 @@ const UpcomingService = {
                 .orderBy('date', 'asc')
                 .limit(parseInt(query.limit))
                 .offset(parseInt(query.offset));
-        }
-        if (query.limit == 0) {
+        } else {
             return db.from('cgc_upcoming_games AS u')
                 .select(
                     'u.id',
@@ -60,8 +59,7 @@ const UpcomingService = {
                 .orderBy('date', 'asc')
                 .limit(parseInt(query.limit))
                 .offset(parseInt(query.offset));
-        }
-        if (query.limit === undefined && query.offset === undefined) {
+        } else {
             return db.from('cgc_upcoming_games AS u')
                 .select(
                     'u.id',
@@ -113,9 +111,9 @@ const UpcomingService = {
     updateGame(db, id, newGameFields) {
         return db('cgc_upcoming_games').where({ id }).update(newGameFields);
     },
-    getById(db, id) {
+    getById(db, id, query) {
         let gameId = parseInt(id);
-        return UpcomingService.adminGetAllUpcomingGames(db)
+        return UpcomingService.adminGetAllUpcomingGames(db, query)
             .where('u.id', gameId)
             .first();
     },

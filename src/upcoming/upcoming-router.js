@@ -34,6 +34,7 @@ upcomingRouter
 upcomingRouter
     .route('/api/admin/game/upcoming')
     .get((req, res, next) => {
+
         UpcomingService.adminGetAllUpcomingGames(req.app.get('db'), req.query)
             .then(upcomingGame => {
                 res.status(200).json(UpcomingService.serializeUpcomingGames(upcomingGame));
@@ -70,7 +71,8 @@ async function checkGameExists(req, res, next) {
     try {
         const game = await UpcomingService.getById(
             req.app.get('db'),
-            req.params.upcoming_id
+            req.params.upcoming_id,
+            req.query
         );
         if (!game) {
             return res.status(404).json({
