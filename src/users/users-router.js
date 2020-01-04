@@ -49,16 +49,15 @@ usersRouter
                     });
             })
             .catch(next);
-    })
+    });
+usersRouter
     .get('/:users_id', (req, res, next) => {
         UsersService.getBio(req.app.get('db'), parseInt(req.params.users_id))
             .then(users => {
-                console.log(users)
                 res.status(200).json(UsersService.serializeUserBios(users));
             });
     })
     .patch('/:users_id', jsonBodyParser, (req, res, next) => {
-        console.log(req.params)
         const { bio } = req.body;
         const bioToUpdate = { bio };
         UsersService.updateBio(req.app.get('db'), parseInt(req.params.users_id), bioToUpdate)
