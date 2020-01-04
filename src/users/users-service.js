@@ -29,6 +29,7 @@ const UsersService = {
         return bcrypt.hash(password, 12);
     },
     updateBio(db, id, newUserFields) {
+        console.log(newUserFields)
         return db('cgc_users').where({ id }).update(newUserFields);
     },
     insertUser(db, newUser) {
@@ -42,7 +43,6 @@ const UsersService = {
     getBio(db, id) {
         return db('cgc_users AS u').where({ id })
             .select(
-                'u.id',
                 'u.bio'
             );
     },

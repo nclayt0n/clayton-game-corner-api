@@ -46,4 +46,25 @@ describe('Users Endpoints', function() {
             });
         });
     });
+    describe(`PATCH /api/users/:users_id`, () => {
+        context(`With users`, () => {
+            const testUsers = helpers.makeUsersArray();
+            beforeEach(() => helpers.seedUsers(
+                db,
+                testUsers
+            ));
+            it(`responds with 204`, () => {
+                const userId = 1;
+                const updatedUserBio = {
+                    "bio": "Update Bio"
+                };
+
+                return supertest(app)
+                    .patch(`/api/users/${userId}`)
+                    .send(updatedUserBio)
+
+                .expect(204);
+            });
+        });
+    });
 });

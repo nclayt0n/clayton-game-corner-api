@@ -50,23 +50,25 @@ usersRouter
             })
             .catch(next);
     })
-    .get('/:user_id', (req, res, next) => {
-        UsersService.getBio(req.app.get('db'), parseInt(req.params.user_id))
+    .get('/:users_id', (req, res, next) => {
+        UsersService.getBio(req.app.get('db'), parseInt(req.params.users_id))
             .then(users => {
+                console.log(users)
                 res.status(200).json(UsersService.serializeUserBios(users));
             });
     })
-    .patch('/:user_id', jsonBodyParser, (req, res, next) => {
+    .patch('/:users_id', jsonBodyParser, (req, res, next) => {
+        console.log(req.params)
         const { bio } = req.body;
         const bioToUpdate = { bio };
-        UsersService.updateBio(req.app.get('db'), parseInt(req.params.user_id), bioToUpdate)
+        UsersService.updateBio(req.app.get('db'), parseInt(req.params.users_id), bioToUpdate)
             .then(numRowsAffected => {
                 res.status(204).end();
             })
             .catch(next);
     })
-    .delete('/:user_id', (req, res, next) => {
-        UsersService.deleteUser(req.app.get('db'), req.params.user_id)
+    .delete('/:users_id', (req, res, next) => {
+        UsersService.deleteUser(req.app.get('db'), req.params.users_id)
             .then(numRowsAffected => {
                 res.status(204).end();
             })
