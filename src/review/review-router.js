@@ -36,23 +36,21 @@ reviewRouter
             });
     })
     .post(jsonParser, upload.single('reviewPicture'), (req, res, next) => {
-        console.log(req.file);
         const { title, game_type, link, review } = req.body;
         const picture = req.file.path;
         const newReview = { title, game_type, link, picture, review };
-        // for (const [key, value] of Object.entries(newReview)) {
-        //     if (value === null) {
-        //         return res.status(400).json({
-        //             error: { message: `Missing '${key}' in request body` }
-        //         });
-        //     }
-        // }
+        for (const [key, value] of Object.entries(newReview)) {
+            if (value === null) {
+                return res.status(400).json({
+                    error: { message: `Missing '${key}' in request body` }
+                });
+            }
+        }
         ReviewService.insertReview(req.app.get('db'), newReview)
             .then(review => {
                 res.status(201)
                     .location(path.posix.join(req.originalUrl, `/${review.id}`))
-                    .json(review);
-                // .json(ReviewService.serializeReview(review));
+                    .json(ReviewService.serializeReview(review));
             })
             .catch(next);
     });
