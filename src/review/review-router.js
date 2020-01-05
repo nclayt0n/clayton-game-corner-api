@@ -3,6 +3,29 @@ const path = require('path');
 const jsonParser = express.json();
 const ReviewService = require('./review-service');
 const reviewRouter = express.Router();
+const multer = require('multer');
+const storage = multer.diskStorage({
+    destination: function(req, file, cb) {
+        cb(null, './uploads/');
+    },
+    filename: function(req, file, cb) {
+        cb(null, file.originalname);
+    }
+});
+const fileFilter = (req, file, cb) => {
+    // reject file
+    if (file.mimetype === 'image/jpeg' || file.mimetype === 'image/png') {
+        cb(null, true);
+    } else {
+        cb(null, false);
+    }
+};
+const upload = multer({
+    storage: storage,
+    limits: {
+        fileSize: 1024 * 1024 * 5
+    }
+});
 
 reviewRouter
     .route('/api/game/review')
@@ -12,21 +35,24 @@ reviewRouter
                 res.status(200).json(ReviewService.serializeReviews(reviews));
             });
     })
-    .post(jsonParser, (req, res, next) => {
-        const { title, game_type, link, picture, review } = req.body;
+    .post(jsonParser, upload.single('reviewPicture'), (req, res, next) => {
+        console.log(req.file);
+        const { title, game_type, link, review } = req.body;
+        const picture = req.file.path;
         const newReview = { title, game_type, link, picture, review };
-        for (const [key, value] of Object.entries(newReview)) {
-            if (value === null) {
-                return res.status(400).json({
-                    error: { message: `Missing '${key}' in request body` }
-                });
-            }
-        }
+        // for (const [key, value] of Object.entries(newReview)) {
+        //     if (value === null) {
+        //         return res.status(400).json({
+        //             error: { message: `Missing '${key}' in request body` }
+        //         });
+        //     }
+        // }
         ReviewService.insertReview(req.app.get('db'), newReview)
             .then(review => {
                 res.status(201)
                     .location(path.posix.join(req.originalUrl, `/${review.id}`))
-                    .json(ReviewService.serializeReview(review));
+                    .json(review);
+                // .json(ReviewService.serializeReview(review));
             })
             .catch(next);
     });

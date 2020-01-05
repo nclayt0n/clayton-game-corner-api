@@ -87,12 +87,11 @@ const ReviewService = {
         const r = {
             id: reviewData.id,
             title: xss(reviewData.title),
-            picture: xss(reviewData.picture),
+            picture: reviewData.picture,
             review: xss(reviewData.review),
             link: xss(reviewData.link),
             game_type: xss(review.game_type)
         };
-
         return r;
     },
     insertReview(db, newReview) {
