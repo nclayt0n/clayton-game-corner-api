@@ -32,12 +32,14 @@ reviewRouter
     .get((req, res, next) => {
         ReviewService.getAllReviews(req.app.get('db'))
             .then(reviews => {
-                res.status(200).json(ReviewService.serializeReviews(reviews));
+                res.status(200).json(reviews);
             });
     })
-    .post(jsonParser, upload.single('reviewPicture'), (req, res, next) => {
+    .post(jsonParser, upload.single('picture'), (req, res, next) => {
+        console.log(req)
         const { title, game_type, link, review } = req.body;
-        const picture = req.file.path;
+        let picture = req.file.path;
+
         const newReview = { title, game_type, link, picture, review };
         for (const [key, value] of Object.entries(newReview)) {
             if (value === null) {
@@ -46,11 +48,12 @@ reviewRouter
                 });
             }
         }
-        ReviewService.insertReview(req.app.get('db'), newReview)
+        let serializedReview = ReviewService.serializeReview(newReview);
+        ReviewService.insertReview(req.app.get('db'), serializedReview)
             .then(review => {
                 res.status(201)
                     .location(path.posix.join(req.originalUrl, `/${review.id}`))
-                    .json(ReviewService.serializeReview(review));
+                    .json(review);
             })
             .catch(next);
     });
@@ -59,7 +62,7 @@ reviewRouter
     .get((req, res, next) => {
         ReviewService.getAllTabletopReviews(req.app.get('db'), req.query)
             .then(reviews => {
-                res.status(200).json(ReviewService.serializeReviews(reviews));
+                res.status(200).json(reviews);
             });
     });
 reviewRouter
@@ -67,23 +70,34 @@ reviewRouter
     .get((req, res, next) => {
         ReviewService.getAllVideoReviews(req.app.get('db'), req.query)
             .then(reviews => {
-                res.status(200).json(ReviewService.serializeReviews(reviews));
+                res.status(200).json(reviews);
             });
     });
 reviewRouter
     .route('/api/game/review/:review_id')
-    .all(checkGameExists)
     .get((req, res) => {
         res.json(ReviewService.serializeReview(res.review));
     })
-    .patch(jsonParser, (req, res, next) => {
-        const { title, game_type, link, picture, review } = req.body;
-        const reviewToUpdate = { title, game_type, link, picture, review };
-        const numberOfValues = Object.values(reviewToUpdate).filter(Boolean).length;
-        if (numberOfValues === 0) {
-            return res.status(400).json({ error: { message: `Request body must contain title, game type, review` } });
+    .patch(jsonParser, upload.single('picture'), (req, res, next) => {
+        console.log(req.file)
+        let picture;
+        let reviewToUpdate;
+        const { title, game_type, link, review } = req.body;
+        console.log(title, game_type, link, review)
+        if (req.file !== undefined) {
+            picture = req.file.path;
+            reviewToUpdate = { title, game_type, link, picture, review };
         }
-        ReviewService.updateReview(req.app.get('db'), req.params.review_id, reviewToUpdate)
+        reviewToUpdate = { title, game_type, link, review };
+        for (const [key, value] of Object.entries(reviewToUpdate)) {
+            if (value === null) {
+                return res.status(400).json({
+                    error: { message: `Missing '${key}' in request body` }
+                });
+            }
+        }
+        let serializedReview = ReviewService.serializeReview(reviewToUpdate);
+        ReviewService.updateReview(req.app.get('db'), req.params.review_id, serializedReview)
             .then(numRowsAffected => {
                 res.status(204).end();
             })

@@ -83,18 +83,36 @@ const ReviewService = {
         // only accepts arrays of objects, and we want to use a single
         // object.
         const reviewData = reviewTree.grow([review]).getData()[0];
-
-        const r = {
+        const parsed = {
             id: reviewData.id,
-            title: xss(reviewData.title),
+            title: JSON.parse(reviewData.title),
             picture: reviewData.picture,
-            review: xss(reviewData.review),
-            link: xss(reviewData.link),
-            game_type: xss(review.game_type)
+            review: JSON.parse(reviewData.review),
+            link: JSON.parse(reviewData.link),
+            game_type: JSON.parse(review.game_type)
         };
+        const r = {
+            id: parsed.id,
+            title: xss(parsed.title),
+            picture: parsed.picture,
+            review: xss(parsed.review),
+            link: xss(parsed.link),
+            game_type: xss(parsed.game_type)
+        };
+
         return r;
     },
+
     insertReview(db, newReview) {
+        // const { title, review, id, link, game_type, picture } = newReview;
+        // const parsedReview = {
+        //     id: id,
+        //     title: JSON.parse(title),
+        //     review: JSON.parse(review),
+        //     link: JSON.parse(link),
+        //     game_type: JSON.parse(game_type),
+        //     picture: picture
+        // };
         return db.insert(newReview)
             .into('cgc_game_reviews')
             .returning('*')
