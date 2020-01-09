@@ -26,7 +26,30 @@ const upload = multer({
         fileSize: 1024 * 1024 * 5
     }
 });
-
+var fs = require('fs');
+var walk = function(dir, done) {
+    var results = [];
+    fs.readdir(dir, function(err, list) {
+        if (err) return (err);
+        var i = 0;
+        (function next() {
+            var file = list[i++];
+            if (!file) return results;
+            file = path.resolve(dir, file);
+            fs.stat(file, function(err, stat) {
+                if (stat && stat.isDirectory()) {
+                    walk(file, function(err, res) {
+                        results = results.concat(res);
+                        next();
+                    });
+                } else {
+                    results.push(file);
+                    next();
+                }
+            });
+        })();
+    });
+};
 reviewRouter
     .route('/api/game/review')
     .get((req, res, next) => {
@@ -62,7 +85,7 @@ reviewRouter
     .get((req, res, next) => {
         ReviewService.getAllTabletopReviews(req.app.get('db'), req.query)
             .then(reviews => {
-                res.status(200).json(reviews);
+                res.status(200).json(ReviewService.serializeReviews(reviews));
             });
     });
 reviewRouter
@@ -79,16 +102,18 @@ reviewRouter
         res.json(ReviewService.serializeReview(res.review));
     })
     .patch(jsonParser, upload.single('picture'), (req, res, next) => {
-        console.log(req.file)
+        console.log(req.body)
         let picture;
         let reviewToUpdate;
         const { title, game_type, link, review } = req.body;
-        console.log(title, game_type, link, review)
         if (req.file !== undefined) {
             picture = req.file.path;
             reviewToUpdate = { title, game_type, link, picture, review };
+        } else {
+            reviewToUpdate = { title, game_type, link, review };
         }
-        reviewToUpdate = { title, game_type, link, review };
+        let x = walk('./uploads')
+        console.log(x)
         for (const [key, value] of Object.entries(reviewToUpdate)) {
             if (value === null) {
                 return res.status(400).json({
@@ -97,9 +122,9 @@ reviewRouter
             }
         }
         let serializedReview = ReviewService.serializeReview(reviewToUpdate);
-        ReviewService.updateReview(req.app.get('db'), req.params.review_id, serializedReview)
+        ReviewService.updateReview(req.app.get('db'), parseInt(req.params.review_id), serializedReview)
             .then(numRowsAffected => {
-                res.status(204).end();
+                res.status(200).json('updated').end();
             })
             .catch(next);
     })

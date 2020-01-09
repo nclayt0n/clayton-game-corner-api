@@ -47,28 +47,28 @@ function makeReviewsArray() {
     let reviews = [{
             "title": "Test Review 1",
             "review": "This was the best game ever!",
-            "picture": "['http://ecx.images-amazon.com/images/I/51l4YWeAEvL._SY300_.jpg']",
+            "picture": "uploads/BoardGameSplendorLogoFairUse.jpg",
             "link": "http://www.notArealSite.com",
             "game_type": "video"
         },
         {
             "title": "Test Review 2",
             "review": "This was an ok game.",
-            "picture": "['http://ecx.images-amazon.com/images/I/51l4YWeAEvL._SY300_.jpg']",
+            "picture": "uploads/BoardGameSplendorLogoFairUse.jpg",
             "link": "http://www.notArealSite.com",
             "game_type": "tabletop"
         },
         {
             "title": "Test Review 3",
             "review": "This game was good and bad.",
-            "picture": "['http://ecx.images-amazon.com/images/I/51l4YWeAEvL._SY300_.jpg']",
+            "picture": "uploads/BoardGameSplendorLogoFairUse.jpg",
             "link": "http://www.notArealSite.com",
             "game_type": "video"
         },
         {
             "title": "Test Review 4",
             "review": "This was an ok game.",
-            "picture": "['http://ecx.images-amazon.com/images/I/51l4YWeAEvL._SY300_.jpg']",
+            "picture": "uploads/BoardGameSplendorLogoFairUse.jpg",
             "link": "http://www.notArealSite.com",
             "game_type": "tabletop"
         }
@@ -118,7 +118,7 @@ function makeExpectedReview() {
         id: 1,
         "title": "Test Review 1",
         "review": "This was the best game ever!",
-        "picture": "['http://ecx.images-amazon.com/images/I/51l4YWeAEvL._SY300_.jpg']",
+        "picture": "uploads/BoardGameSplendorLogoFairUse.jpg",
         "link": "http://www.notArealSite.com",
         "game_type": "video"
     };
