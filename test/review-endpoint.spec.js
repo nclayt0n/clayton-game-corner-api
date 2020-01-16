@@ -147,7 +147,7 @@ describe('Review Endpoints', function() {
                 db,
                 testReviews
             ));
-            it(`responds with 204`, () => {
+            it(`responds with 200`, () => {
                 const reviewId = 1;
                 const updatedReview = {
                     "title": "updated Review Test",
@@ -161,7 +161,7 @@ describe('Review Endpoints', function() {
                     .patch(`/api/game/review/${reviewId}`)
                     .send(updatedReview)
 
-                .expect(204);
+                .expect(200);
             });
         });
     });
