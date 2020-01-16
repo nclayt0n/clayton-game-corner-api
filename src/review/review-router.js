@@ -61,7 +61,7 @@ reviewRouter
         }
         ReviewService.updateReview(req.app.get('db'), req.params.review_id, reviewToUpdate)
             .then(numRowsAffected => {
-                res.status(204).end();
+                res.status(200).json('updated').end();
             })
             .catch(next);
     })
