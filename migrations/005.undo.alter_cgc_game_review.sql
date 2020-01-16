@@ -1,0 +1,1 @@
+ALTER TABLE cgc_game_reviews ALTER COLUMN review [VARCHAR(400) NOT NULL];
