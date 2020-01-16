@@ -12,7 +12,6 @@ const reviewRouter = require('./review/review-router');
 const morganOptions = (NODE_ENV === 'production') ? 'tiny' : 'dev';
 
 app.use(morgan(morganOptions));
-app.use('/api/uploads', express.static('uploads'));
 app.use(helmet());
 app.use(cors());
 app.use('/api/users', usersRouter);
