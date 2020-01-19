@@ -10,7 +10,10 @@ const ReviewService = {
                 'r.picture',
                 'r.review',
                 'r.link',
-                'r.game_type'
+                'r.game_type',
+                db.raw(
+                    `to_char(r.date_created,'MM/DD/YYYY') as date_created`
+                )
             )
             .orderBy('r.title', 'asc');
     },
@@ -23,7 +26,10 @@ const ReviewService = {
                     'r.picture',
                     'r.review',
                     'r.link',
-                    'r.game_type'
+                    'r.game_type',
+                    db.raw(
+                        `to_char(r.date_created,'MM/DD/YYYY') as date_created`
+                    )
                 )
                 .orderBy('r.title', 'asc')
                 .where('r.game_type', '=', 'tabletop')
@@ -37,7 +43,10 @@ const ReviewService = {
                     'r.picture',
                     'r.review',
                     'r.link',
-                    'r.game_type'
+                    'r.game_type',
+                    db.raw(
+                        `to_char(r.date_created,'MM/DD/YYYY') as date_created`
+                    )
                 )
                 .orderBy('r.title', 'asc')
                 .where('r.game_type', '=', 'tabletop');
@@ -53,7 +62,10 @@ const ReviewService = {
                     'r.picture',
                     'r.review',
                     'r.link',
-                    'r.game_type'
+                    'r.game_type',
+                    db.raw(
+                        `to_char(r.date_created,'MM/DD/YYYY') as date_created`
+                    )
                 )
                 .orderBy('r.title', 'asc')
                 .where('r.game_type', '=', 'video')
@@ -67,7 +79,10 @@ const ReviewService = {
                     'r.picture',
                     'r.review',
                     'r.link',
-                    'r.game_type'
+                    'r.game_type',
+                    db.raw(
+                        `to_char(r.date_created,'MM/DD/YYYY') as date_created`
+                    )
                 )
                 .orderBy('r.title', 'asc')
                 .where('r.game_type', '=', 'video');
@@ -90,7 +105,8 @@ const ReviewService = {
             picture: reviewData.picture,
             review: xss(reviewData.review),
             link: xss(reviewData.link),
-            game_type: xss(review.game_type)
+            game_type: xss(review.game_type),
+            date_created: review.date_created
         };
         return r;
     },

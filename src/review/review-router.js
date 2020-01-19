@@ -35,6 +35,7 @@ reviewRouter
     .get((req, res, next) => {
         ReviewService.getAllTabletopReviews(req.app.get('db'), req.query)
             .then(reviews => {
+                console.log(reviews)
                 res.status(200).json(ReviewService.serializeReviews(reviews));
             });
     });

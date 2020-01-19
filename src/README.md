@@ -582,3 +582,10 @@ code:400<br/>
             body: JSON.stringify({ id, title, game_type, link, picture, review })
         };
         return fetch(API_ENDPOINT/game/review/:review_id, options)
+
+### `Screenshots`
+<img src='/src/images/admin-review.png' alt="Admin Game Review" width='250'>
+<img src='/src/images/Home.png' alt='Home Page' width='250'>
+<img src='/src/images/review.png' alt='Game Review Page' width='250'>
+<img src='/src/images/admin-upcoming.png' alt='Admin Upcoming Game Page' width='250'>
+<img src='/src/images/upcoming.png' alt='Upcoming Page' width='250'>
